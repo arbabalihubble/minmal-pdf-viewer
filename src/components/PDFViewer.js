@@ -46,7 +46,33 @@ const PDFViewer = () => {
     }
     // Ref to access the viewer's API functions
     const viewerRef = useRef();
-
+    const findIndexInPage = (spans, keyStart, keyEnd, pageText) => {
+      
+      let start = 0, end = 0;
+      spans.forEach((span, index) => {
+        console.log(`----------\nstart: ${start}\n----------`);
+        if (start >= keyStart && start <= keyEnd){
+          console.log(start, end)
+          span.classList.add("highlight");
+        }
+        start += span.innerText.length;
+      });
+    }
+    const hightlightText = () => {
+      const page = document.querySelector("[aria-label='Page 42']");
+      const spans = page.querySelectorAll(".rpv-core__text-layer-text");
+      let pageText = "";
+      spans.forEach((span) => {
+        pageText += span.innerText;
+      })
+      // pageText
+      const key = "42THE FIRST SCHEDULE.—contd.THIRD DIVISION : APPLICATIONS—contd.Description of application.";
+      const start = pageText.indexOf(key);
+      const end = start + key.length;
+      console.log(`start: ${start}\nend: ${end}`);
+      findIndexInPage(spans, start, end, pageText);
+      console.log(pageText);
+    }
  
   return (
     <div className='container'>
@@ -57,9 +83,14 @@ const PDFViewer = () => {
             </button>
             <br />
             <button onClick={() => {
-                jumpToPage(30)
-                console.log(viewerRef);
-
+                jumpToPage(41)
+                setTimeout(() => {
+                  
+                  hightlightText();
+                }, 3000);
+                
+                  
+                 
             }}>
                 Click me
             </button>
